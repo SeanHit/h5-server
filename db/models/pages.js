@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Pages extends Model {
+  class Page extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,39 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  Pages.init({
-    tid: DataTypes.STRING,
-    pageConfig: DataTypes.STRING,
-    tpl: DataTypes.STRING,
-    creator: DataTypes.STRING
+  Page.init({
+    tid: { type: DataTypes.STRING, unique: true },
+    pageConfig: {
+      type: DataTypes.STRING, get() {
+        return JSON.parse(this.getDataValue('pageConfig'))
+      }, set(value) {
+        this.setDataValue('pageConfig', JSON.stringify(value));
+      }
+    },
+    tpl: {
+      type: DataTypes.STRING, get() {
+        return JSON.parse(this.getDataValue('tpl'))
+      }, set(value) {
+        this.setDataValue('tpl', JSON.stringify(value));
+      }
+    },
+    creator: DataTypes.STRING,
+    update_time: {
+      type: DataTypes.DATE, get() {
+        return new Date(this.getDataValue('update_time')).getTime();
+      }
+    },
+    create_time: {
+      type: DataTypes.DATE, get() {
+        return new Date(this.getDataValue('create_time')).getTime();
+      }
+    }
   }, {
     sequelize,
-    modelName: 'Pages',
+    modelName: 'Page',
+    tableName: 'Pages',
+    createdAt: 'create_time',
+    updatedAt: 'update_time'
   });
-  return Pages;
+  return Page;
 };

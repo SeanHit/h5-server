@@ -1,31 +1,26 @@
 const express = require('express');
 const router = express.Router(); // 路由对象
-const models = require('../../db/models')
+const { User, Page } = require('../../db/models')
 const { SUCCESS_CODE, ERROR_CODE } = require('../const')
-
 /** 登录 */
 router.post('/save', async (req, res, next) => {
     try {
         // 创建者 id代号 页面配置信息 活动页面的设置信息
         const { creator, tid, tpl, pageConfig } = req.body;
-        console.log('123', typeof tpl)
         if (creator && tid && tpl && pageConfig) {
-            const user = await models.Users.findOne({
+            const user = await User.findOne({
                 where: { name: creator }
             })
             if (user) {
-                const page = await models.Pages.create({
-                    creator,
+                const page = await user.createPage({
                     tid,
-                    tpl: JSON.stringify(tpl),
-                    pageConfig: JSON.stringify(pageConfig)
+                    tpl,
+                    pageConfig,
                 })
                 if (page) {
                     res.json({
                         code: SUCCESS_CODE,
-                        data: {
-                            ...page, pageConfig: JSON.parse(page.pageConfig), tpl: JSON.parse(page.tpl)
-                        },
+                        data: page.toJSON(),
                         message: 'success'
                     })
                 } else {
@@ -52,7 +47,7 @@ router.get('/get', async (req, res, next) => {
     try {
         const { tid } = req.query;
         if (tid) {
-            const page = await models.Pages.findOne({
+            const page = await Page.findOne({
                 where: { tid }
             })
 

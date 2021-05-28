@@ -120,4 +120,31 @@
             "message": "请求错误"
         }
 
- 
+## 5.登录
+### 请求方式
+  POST /user/login
+### 请求参数
+  |参数|是否必选|类型|说明|
+  |---|---|---|---|
+  |name|是|string|用户名|
+  |password|是|string|密码|
+### 返回示例
+    成功
+        {
+            "code": 0,
+            "data": {
+              "id": 1,
+              "name": "liuxiang",
+              "password": "liuxiang",
+              "end_time": "2021-12-31T14:04:48.000Z",
+              "start_time": "2021-05-06T14:05:01.000Z",
+              "createdAt": "2021-05-06T14:05:04.000Z",
+              "updatedAt": "2021-05-06T14:05:07.000Z"
+            },
+            "message": "success"
+        }
+    失败
+        {
+            "code": 1,
+            "message": "用户名或密码不正确"
+        }
