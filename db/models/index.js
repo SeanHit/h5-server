@@ -15,6 +15,12 @@ if (config.use_env_variable) {
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+
+// 根据配置更新表
+// sequelize.sync({
+//     alter: true
+// })
+
 fs
     .readdirSync(__dirname)
     .filter(file => {
@@ -30,6 +36,13 @@ Object.keys(db).forEach(modelName => {
         db[modelName].associate(db);
     }
 });
+
+// 表的关联
+db.User.hasMany(db.Page, {
+    foreignKey: 'creator'
+});
+// db.Page.belongsTo(db.User);
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

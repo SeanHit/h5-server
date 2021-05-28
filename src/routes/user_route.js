@@ -1,17 +1,19 @@
-const express = require('express');
+const express = require('express')
+const { Op } = require("sequelize");
+const md5 = require('md5')
 const router = express.Router(); // 路由对象
-const models = require('../../db/models')
+const { User, Page } = require('../../db/models')
 const { SUCCESS_CODE } = require('../const')
 
-const { Users } = models
 
 /** 登录 */
 router.post('/login', async (req, res, next) => {
     try {
         const { name, password } = req.body;
         if (name && password) {
-            const user = await Users.findOne({
-                where: { name, password }
+            const user = await User.findOne({
+                where: { name, password: { [Op.or]: [md5(password), password] } },
+                attributes: { exclude: ['password'] }
             })
             if (user) {
                 res.json({
@@ -33,14 +35,17 @@ router.post('/login', async (req, res, next) => {
     }
 })
 
+/** 获取用户列表 */
 router.get('/list', async (req, res, next) => {
     try {
         const { page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
-        const list = await Users.findAndCountAll({
+        const list = await User.findAndCountAll({
+            attributes: { exclude: ['password'] },
             where: {},
             offset,
-            limit
+            limit,
+            include: Page
         })
         res.json({
             code: SUCCESS_CODE,
@@ -51,14 +56,15 @@ router.get('/list', async (req, res, next) => {
     }
 })
 
+/** 添加用户 注册 */
 router.post('/add', async (req, res, next) => {
     try {
-        const { name, password, end_time = '2021-12-31T14:04:48.000Z' } = req.body;
+        const { name, password, end_time = '2021-12-31 23:59:59.999' } = req.body;
         if (name && password && end_time) {
-            const user = await Users.create({
+
+            const user = await User.create({
                 name, password, end_time
             })
-            console.log('123', user, user instanceof Users, typeof user.createAtpage);
             res.json({
                 code: SUCCESS_CODE,
                 message: 'success',
@@ -71,5 +77,18 @@ router.post('/add', async (req, res, next) => {
         next(error)
     }
 })
+
+/** 删除用户 */
+router.delete('/del', async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        if (!id) next(new Error('缺少必要参数'));
+        // const
+    } catch (error) {
+        next(error);
+    }
+})
+
+
 
 module.exports = router;
