@@ -15,12 +15,10 @@
           "code": 0,
           "message": "success",
           "data": {
-            "id": 7,
             "name": "wangwu",
-            "password": "wangwu",
             "end_time": "2021-12-31T14:04:48.000Z",
-            "updatedAt": "2021-05-24T02:27:37.441Z",
-            "createdAt": "2021-05-24T02:27:37.441Z"
+            "update_time": "2021-05-24T02:27:37.441Z",
+            "create_time": "2021-05-24T02:27:37.441Z"
           }
         }
 	失败
@@ -35,7 +33,7 @@
 ### 参数类型
 | 参数 | 是否必选 | 类型 | 说明 |
 |---|---|---|---| 
-| id | 是 | int | 用户id |
+| name | 是 | string | 用户唯一名称 |
 ### 返回实例
     成功:
         {
@@ -54,22 +52,19 @@
 ### 参数类型
 |参数|是否必选|类型|说明|
 |---|---|---|---|
-| id | 是 | int | 用户唯一id |
-| name | 否 | string | 用户名 |
+| name | 是 | string | 用户名 唯一 |
 | password | 否 | string | 密码 |
-|end_time| 否 | string | 用户可使用的最后时间|
+| end_time | 否 | string | 用户可使用的最后时间|
 ### 请求示例
     成功:
         {
           "code": 0,
           "message": "success",
            "data": {
-            "id": 7,
             "name": "wangwu",
-            "password": "wangwu",
             "end_time": "2021-12-31T14:04:48.000Z",
-            "updatedAt": "2021-05-24T02:27:37.441Z",
-            "createdAt": "2021-05-24T02:27:37.441Z"
+            "update_time": "2021-05-24T02:27:37.441Z",
+            "create_time": "2021-05-24T02:27:37.441Z"
           }
         }
     失败
@@ -94,22 +89,18 @@
             "count": 5, // 所有用户的总数
             "rows": [
               {
-                "id": 1,
                 "name": "liuxiang",
-                "password": "liuxiang",
                 "end_time": "2021-12-31T14:04:48.000Z",
                 "start_time": "2021-05-06T14:05:01.000Z",
-                "createdAt": "2021-05-06T14:05:04.000Z",
-                "updatedAt": "2021-05-06T14:05:07.000Z"
+                "create_time": "2021-05-06T14:05:04.000Z",
+                "update_time": "2021-05-06T14:05:07.000Z"
               },
               {
-                "id": 4,
                 "name": "wangxiaoer",
-                "password": "wangxiaoer",
                 "end_time": "2021-12-31T14:04:48.000Z",
                 "start_time": null,
-                "createdAt": "2021-05-23T15:11:17.000Z",
-                "updatedAt": "2021-05-23T15:11:17.000Z"
+                "create_time": "2021-05-23T15:11:17.000Z",
+                "update_time": "2021-05-23T15:11:17.000Z"
               }
             ]
           }
@@ -133,13 +124,11 @@
         {
             "code": 0,
             "data": {
-              "id": 1,
               "name": "liuxiang",
-              "password": "liuxiang",
               "end_time": "2021-12-31T14:04:48.000Z",
               "start_time": "2021-05-06T14:05:01.000Z",
-              "createdAt": "2021-05-06T14:05:04.000Z",
-              "updatedAt": "2021-05-06T14:05:07.000Z"
+              "create_time": "2021-05-06T14:05:04.000Z",
+              "update_time": "2021-05-06T14:05:07.000Z"
             },
             "message": "success"
         }

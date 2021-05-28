@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const md5 = require('md5')
 const router = express.Router(); // 路由对象
 const { User, Page } = require('../../db/models')
-const { SUCCESS_CODE } = require('../const')
+const { SUCCESS_CODE, ERROR_CODE } = require('../const')
 
 
 /** 登录 */
@@ -81,11 +81,56 @@ router.post('/add', async (req, res, next) => {
 /** 删除用户 */
 router.delete('/del', async (req, res, next) => {
     try {
-        const { id } = req.body;
-        if (!id) next(new Error('缺少必要参数'));
-        // const
+        const { name } = req.body;
+        if (!name) next(new Error('缺少必要参数'));
+        const num = await User.destroy({
+            where: {
+                name
+            },
+            limit: 1
+        });
+        if (num > 0) {
+            res.json({
+                code: SUCCESS_CODE,
+                message: '删除成功'
+            })
+        } else {
+            res.json({
+                code: ERROR_CODE,
+                message: '删除的用户不存在'
+            })
+        }
     } catch (error) {
         next(error);
+    }
+})
+
+/** 修改用户信息 */
+router.post('/update', async (req, res, next) => {
+    try {
+        const { name, password, end_time } = req.body;
+        if (!name) next(new Error('缺少必要参数'));
+        let user = await User.findOne({
+            where: { name }
+        })
+        if (user) {
+            user = await user.update({
+                password, end_time
+            })
+            res.json({
+                code: SUCCESS_CODE,
+                data: user,
+                message: 'success'
+            })
+        } else {
+            res.json({
+                code: ERROR_CODE,
+                message: '更新的用户不存在'
+            })
+        }
+
+    } catch (error) {
+        next(error)
     }
 })
 
